@@ -1,5 +1,5 @@
 --- Cart.php	2025-03-22 05:40:53.484362500 +0000
-+++ ReviewedCart.php	2025-03-22 05:41:17.989495700 +0000
++++ Cart.php	2025-03-22 05:41:17.989495700 +0000
 @@ -8,55 +8,89 @@
  
  namespace App\Review;
@@ -11,8 +11,7 @@
   *
   * The Cart class allows to add/remove item on the cart and get the total cost.
   */
--class Cart
-+class ReviewedCart
+class Cart
  {
 -    public const priceList = [
 +    private const PRICE_LIST = [
@@ -49,10 +48,9 @@
 -    public function addItem($name, $quantity = 1) {
 -        $this->cart_items[] = [
 -            'name' => $name,
--            'price' => self::priceList[$name],
 -            'quantity' => $quantity
 -        ];
--        $this->total += self::priceList[$name] * $quantity;
+-        $this->total += $this->getPrice($name) * $quantity;
 +    public function addItem(string $name, int $quantity = 1): void
 +    {
 +        if ($quantity <= 0) {
@@ -86,7 +84,7 @@
 -    public function removeItem($name) {
 -        foreach ($this->cart_items as $key => $item) {
 -            if ($item['name'] == $name) {
--                $this->total -= $item['price'] * $item['quantity'];
+-                $this->total -= $this->getPrice($name) * $item['quantity'];
 -            }
 +    public function removeItem(string $name): void
 +    {
