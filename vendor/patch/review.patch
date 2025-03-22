@@ -1,0 +1,111 @@
+--- Cart.php	2025-03-22 05:40:53.484362500 +0000
++++ ReviewedCart.php	2025-03-22 05:41:17.989495700 +0000
+@@ -8,55 +8,89 @@
+ 
+ namespace App\Review;
+ 
++use Exception;
++
+ /**
+  * Here is a new class that requires to be reviewed.
+  *
+  * The Cart class allows to add/remove item on the cart and get the total cost.
+  */
+-class Cart
++class ReviewedCart
+ {
+-    public const priceList = [
++    private const PRICE_LIST = [
+         'apple' => 10,
+         'orange' => 20,
+         'strawberry' => 30
+     ];
+-    public $cart_items = [];
+-    public $total = 0;
++    private array $cartItems = [];
++    private int $total = 0;
+ 
+     /**
+      * Get price for the item
++     * @return int
+      */
+-    protected function getPrice($name) {
+-        return self::priceList[$name];
++    protected function getPrice($name): int
++    {
++        $price = self::PRICE_LIST[$name] ?? 0;
++        if ($price === 0) {
++            throw new Exception("Item not found.");
++        }
++        return $price;
+     }
+ 
+     /**
+      * Add an item to the cart
++     * @param string $name Name of item to be added
++     * @param int $quantity Quantity of item to be added
++     * @return void
+      */
+-    public function addItem($name, $quantity = 1) {
+-        $this->cart_items[] = [
+-            'name' => $name,
+-            'price' => self::priceList[$name],
+-            'quantity' => $quantity
+-        ];
+-        $this->total += self::priceList[$name] * $quantity;
++    public function addItem(string $name, int $quantity = 1): void
++    {
++        if ($quantity <= 0) {
++            throw new Exception("Price and quantity must be positive.");
++        }
++        $price = $this->getPrice($name);
++
++        foreach ($this->cartItems as &$item) {
++            if ($item['name'] === $name) {
++                $item['quantity'] += $quantity;
++                return;
++            }
++        }
++
++        if (!isset($this->cartItems[$name])) {
++            $this->cartItems[$name] = [
++                'name' => $name,
++                'quantity' => 0
++            ];
++        }
++
++        $this->cartItems[$name]['quantity'] += $quantity;
++        $this->total += $price * $quantity;
+     }
+ 
+     /**
+      * Remove an item from the cart
++     * @param string $name Name of item to be removed
++     * @return void
+      */
+-    public function removeItem($name) {
+-        foreach ($this->cart_items as $key => $item) {
+-            if ($item['name'] == $name) {
+-                $this->total -= $item['price'] * $item['quantity'];
+-            }
++    public function removeItem(string $name): void
++    {
++        if (!isset($this->cartItems[$name]) || !isset(self::PRICE_LIST[$name])) {
++            throw new Exception("Item not found.");
+         }
++
++        $cartItem = $this->cartItems[$name];
++        $this->total -= self::PRICE_LIST[$name] * $cartItem['quantity'];
++        unset($this->cartItems[$name]);
+     }
+ 
+     /**
+      * Get the total cost of the cart
++     * @return int
+      */
+-    public function getTotal() {
++    public function getTotal(): int
++    {
+         return $this->total;
+     }
+ }
