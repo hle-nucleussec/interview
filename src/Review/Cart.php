@@ -21,7 +21,7 @@ class Cart
         'strawberry' => 30
     ];
     public $cart_items = [];
-    public $total = 0;
+    public $total;
 
     /**
      * Get price for the item
