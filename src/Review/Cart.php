@@ -9,12 +9,16 @@ declare(strict_types=1);
 namespace App\Review;
 
 /**
- * Here is a new class that requires to be reviewed.
- *
  * The Cart class allows to add/remove item on the cart and get the total cost.
+ *
+ * The code is written by a junior developer. As a senior developer,
+ * you are asked to review the code.
+ *
+ * Please review the code and focus high impact issues.
  */
 class Cart
 {
+    // Simple version for lookup table
     public const priceList = [
         'apple' => 10,
         'orange' => 20,
