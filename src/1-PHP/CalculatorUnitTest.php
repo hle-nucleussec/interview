@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Math;
+namespace App\PHP;
 
 use PHPUnit\Framework\TestCase;
 

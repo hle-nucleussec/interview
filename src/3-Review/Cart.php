@@ -9,6 +9,8 @@ declare(strict_types=1);
 namespace App\Review;
 
 /**
+ * Time Limit: 10 mins
+ * 
  * The Cart class allows to add/remove item on the cart and get the total cost.
  *
  * The code is written by a junior developer. As a senior developer,
