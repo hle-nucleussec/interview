@@ -14,8 +14,8 @@ CREATE TABLE orders
     FOREIGN KEY (customer_id) REFERENCES customers (id)
 );
 
+-- Time limit: 5 mins
 -- Assume the above tables are already populated with data
 
--- Write a query to retrieve all customer names have no order or with the total order amounts less than 10
+-- Write a query to retrieve all customer names have either no order or with the total order amounts less than 10
 -- sort by customer name
-
